@@ -3,7 +3,13 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - LevelMap
+  - PickupStar
+  - Enemy
+  - Trap1
+  - Health
+  - Speed
   layers:
   - Default
   - TransparentFX
