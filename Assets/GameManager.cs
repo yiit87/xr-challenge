@@ -15,6 +15,9 @@ public class GameManager : MonoBehaviour
     private int HealthValue;
     public Image HealthTotalRepresenter;
 
+    private int StarCollect;
+    public Text StarCollectedText;
+
     GameObject Player;
 
     private void Awake()
@@ -34,7 +37,7 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         UpdateScoreValue();
-
+        UpdateCollectedStarValue();
     }
 
     public void PauseTheGame(bool value)
@@ -63,6 +66,16 @@ public class GameManager : MonoBehaviour
     public void PlayerSpeedIncrease(int value)
     {
         Player.GetComponent<PlayerMovement>().AdjustSpeed(value);
+    }
+
+    public void CollectedStarCounter()
+    {
+        StarCollect++;
+    }
+
+    public void UpdateCollectedStarValue()
+    {
+        StarCollectedText.text = "Collected Stars: " + StarCollect.ToString() + "/5";
     }
 
     public void HealthBarAdjuster()
