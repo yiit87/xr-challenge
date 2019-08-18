@@ -11,7 +11,7 @@ public class PickingThePickables : MonoBehaviour
             float scorePoint = other.GetComponent<Pickup>().ScoreValue;
             other.GetComponent<Pickup>().GetPickedUp();
             GameManager.Instance.AddToTotalScore(scorePoint);
-            GameManager.Instance.CollectedStarCounter();
+            GameManager.Instance.AddCollectedStar();
         }
         else if(other.CompareTag("Trap1"))
         {
@@ -26,6 +26,10 @@ public class PickingThePickables : MonoBehaviour
         {
             other.GetComponentInParent<PickableSpeed>().AddSpeed();
             other.GetComponent<PickableSpeed>().GetPickedUp();
+        }
+        else if (other.CompareTag("Exit"))
+        {
+            other.GetComponent<ExitSystem>().EndTheLevel();
         }
     }
 }

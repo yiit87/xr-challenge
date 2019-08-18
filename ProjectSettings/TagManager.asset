@@ -10,6 +10,7 @@ TagManager:
   - Trap1
   - Health
   - Speed
+  - Exit
   layers:
   - Default
   - TransparentFX

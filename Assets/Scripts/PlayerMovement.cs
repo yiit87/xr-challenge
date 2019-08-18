@@ -16,11 +16,14 @@ public class PlayerMovement : MonoBehaviour
     private float TotalSpeedActiveTime = 5f;
     private float DefaultSpeed;
 
+    private Animator anim;
+    public AudioSource MainMusic;
+
     // Start is called before the first frame update
     void Start()
     {
         cc = GetComponent<CharacterController>();
-
+        anim = GetComponentInChildren<Animator>();
         DefaultSpeed = PlayerSpeed;
     }
 
@@ -43,6 +46,7 @@ public class PlayerMovement : MonoBehaviour
                     PlayerSpeed = DefaultSpeed;
                     TotalSpeedActiveTime = 5;
                     FasterActive = false;
+                    anim.SetBool("isFast", false);
                 }
             }
 
@@ -58,10 +62,25 @@ public class PlayerMovement : MonoBehaviour
     {
         if ((horizontal != 0f || vertical != 0f))
         {
+            if (!FasterActive)
+            {
+                anim.SetBool("isWalking", true);
+            }
+            else
+            {
+                anim.SetBool("isFast", true);
+            }
+            anim.speed = 2.5f;
+
             PlayerMove(horizontal, vertical);
         }
-        
+        else
+        {
+            anim.SetBool("isWalking", false);
+            anim.SetBool("isFast", false);
+        }
     }
+
     private void PlayerMove(float horizontal, float vertical)
     {
         moveDirectionPlayer = new Vector3(horizontal, 0, vertical);
@@ -69,8 +88,14 @@ public class PlayerMovement : MonoBehaviour
         cc.Move(moveDirectionPlayer * Time.deltaTime);
 
         Quaternion targetRotation = Quaternion.LookRotation(moveDirectionPlayer);
-        Quaternion newRotation = Quaternion.RotateTowards(transform.rotation, targetRotation, 15 * Time.deltaTime);
+        Quaternion newRotation = Quaternion.RotateTowards(transform.rotation, targetRotation, 300 * Time.deltaTime);
 
         transform.rotation = newRotation;
+    }
+
+    public void DieAnimation()
+    {
+        anim.speed = 1;
+        anim.SetBool("isGetShot", true);
     }
 }

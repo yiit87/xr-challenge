@@ -152,8 +152,9 @@ public class Enemy : MonoBehaviour
         ShootingLaser.enabled = true;
         ShootingLaser.SetPosition(0, new Vector3(transform.position.x,1.015f, transform.position.z));
         ShootingLaser.SetPosition(1, targetPlayer.transform.position);
-       // PlayerMove player = Player.GetComponent<PlayerMove>();
-       // player.AmIDead = true;
+
+        targetPlayer.GetComponent<PlayerMovement>().DieAnimation();
+       
     }
 
     void LoadLevelAgain()
