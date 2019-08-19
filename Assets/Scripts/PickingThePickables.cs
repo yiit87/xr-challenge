@@ -12,6 +12,7 @@ public class PickingThePickables : MonoBehaviour
             other.GetComponent<Pickup>().GetPickedUp();
             GameManager.Instance.AddToTotalScore(scorePoint);
             GameManager.Instance.AddCollectedStar();
+            GetComponent<MoveStarToNewLocation>().NewStarPosition();
         }
         else if(other.CompareTag("Trap1"))
         {

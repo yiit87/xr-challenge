@@ -17,7 +17,6 @@ public class PlayerMovement : MonoBehaviour
     private float DefaultSpeed;
 
     private Animator anim;
-    public AudioSource MainMusic;
 
     // Start is called before the first frame update
     void Start()
