@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
@@ -52,6 +53,21 @@ public class GameManager : MonoBehaviour
             OptionsMenuButton();
         }
 
+
+        PauseConditions();
+        UpdateScoreValue();
+        UpdateCollectedStarValue();
+
+        WarningTextShut();
+    }
+
+    
+    public void PauseTheGame(bool value)
+    {
+        Pause = value;
+    }
+    private void PauseConditions()
+    {
         if (Pause)
         {
             MainMusic.Pause();
@@ -65,17 +81,6 @@ public class GameManager : MonoBehaviour
             }
             PauseMenu.SetActive(false);
         }
-
-        UpdateScoreValue();
-        UpdateCollectedStarValue();
-
-        WarningTextShut();
-    }
-
-    
-    public void PauseTheGame(bool value)
-    {
-        Pause = value;
     }
 
     public void AddToTotalScore(float value)
@@ -152,28 +157,30 @@ public class GameManager : MonoBehaviour
     //Menu Button Functionalities
     public void OptionsMenuButton()
     {
-        switchTheGameState = !switchTheGameState;
-        PauseTheGame(switchTheGameState);
-        PausePanel.SetActive(switchTheGameState);
+        switchTheGameState = !switchTheGameState; // Change between true or false
+        PauseTheGame(switchTheGameState); // Depending of the true or false value pause or unpause the game
+        PausePanel.SetActive(switchTheGameState); // Depending of the true or false value turn on or off the pause menu
     }
 
+    #region Button Functionalities
     public void MainMenuButton()
     {
-
+        SceneManager.LoadScene(0);
     }
 
     public void RestartButton()
     {
-
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
     public void ResumeButton()
     {
-        Debug.Log("ssssssssssss");
+        OptionsMenuButton();
     }
 
     public void ExitButton()
     {
-
+        Application.Quit();
     }
+    #endregion
 }
