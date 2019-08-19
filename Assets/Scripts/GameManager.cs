@@ -27,6 +27,8 @@ public class GameManager : MonoBehaviour
     private bool switchTheGameState = false;
     public AudioSource MainMusic;
 
+    public GameObject PausePanel;
+    public GameObject YouDiedPanel;
 
     private void Awake()
     {
@@ -47,8 +49,7 @@ public class GameManager : MonoBehaviour
     {
         if (Input.GetButtonDown("Cancel"))
         {
-            switchTheGameState = !switchTheGameState;
-            PauseTheGame(switchTheGameState);
+            OptionsMenuButton();
         }
 
         if (Pause)
@@ -71,6 +72,7 @@ public class GameManager : MonoBehaviour
         WarningTextShut();
     }
 
+    
     public void PauseTheGame(bool value)
     {
         Pause = value;
@@ -140,5 +142,38 @@ public class GameManager : MonoBehaviour
                 timer = 5f;
             }
         }
+    }
+
+    public void PlayerDiedPanelActivation()
+    {
+        YouDiedPanel.SetActive(true);
+    }
+
+    //Menu Button Functionalities
+    public void OptionsMenuButton()
+    {
+        switchTheGameState = !switchTheGameState;
+        PauseTheGame(switchTheGameState);
+        PausePanel.SetActive(switchTheGameState);
+    }
+
+    public void MainMenuButton()
+    {
+
+    }
+
+    public void RestartButton()
+    {
+
+    }
+
+    public void ResumeButton()
+    {
+        Debug.Log("ssssssssssss");
+    }
+
+    public void ExitButton()
+    {
+
     }
 }

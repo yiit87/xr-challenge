@@ -31,6 +31,7 @@ public class Enemy : MonoBehaviour
     private bool alive = true;
 
     LineRenderer ShootingLaser;
+    public GameObject LaserGun;
 
     public enum State
     {
@@ -136,13 +137,13 @@ public class Enemy : MonoBehaviour
                 if (angle < 25)
                 {
                     //Shoot Now we saw the player
-                    Debug.LogError("Saw you human!");
+                    Debug.Log("Saw you human!");
                     state = State.ATTACK;
                 }
             }
         }
 
-        Debug.DrawRay(transform.position, transform.forward, Color.magenta, Mathf.Infinity);
+        //Debug.DrawRay(transform.position, transform.forward, Color.magenta, Mathf.Infinity);
     }
 
     void Attack()
@@ -150,15 +151,20 @@ public class Enemy : MonoBehaviour
         Debug.Log("Attaaaaack!");
         agent.isStopped = true;
         ShootingLaser.enabled = true;
-        ShootingLaser.SetPosition(0, new Vector3(transform.position.x,1.015f, transform.position.z));
+        ShootingLaser.SetPosition(0, LaserGun.transform.position);//new Vector3(LaserGun.transform.position,x,1.5f, transform.position.z - 0.2f));
         ShootingLaser.SetPosition(1, targetPlayer.transform.position);
 
+        GameManager.Instance.PlayerTakeDamage(100);
         targetPlayer.GetComponent<PlayerMovement>().DieAnimation();
-       
+
+
+        StartCoroutine(DieAnimationDelay());
     }
 
-    void LoadLevelAgain()
+    IEnumerator DieAnimationDelay()
     {
-       // SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        yield return new WaitForSeconds(2);
+        GameManager.Instance.PlayerDiedPanelActivation();
+        GameManager.Instance.PauseTheGame(true);
     }
 }
