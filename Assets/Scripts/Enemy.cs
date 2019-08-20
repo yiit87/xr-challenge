@@ -33,6 +33,12 @@ public class Enemy : MonoBehaviour
     LineRenderer ShootingLaser;
     public GameObject LaserGun;
 
+    private const string TAG_ENEMY = "Enemy";
+    private const string TAG_PLAYER = "Player";
+    private const float ANGULAR_SPEED = 250f;
+    private const float ANGLE_TO_SEE = 25f;
+    private const int DAMAGE_VALUE = 100;
+
     public enum State
     {
         PATROL,
@@ -42,15 +48,15 @@ public class Enemy : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        gameObject.tag = "Enemy";
-        transform.position = patrolPoints[0].position;
+        gameObject.tag = TAG_ENEMY;
+        transform.position = patrolPoints[0].position; //Enemy position is the first patrol location position
 
         agent = GetComponent<NavMeshAgent>();
         agent.updatePosition = agent.updateRotation = true;
 
-        targetPlayer = GameObject.FindGameObjectWithTag("Player");
-        col = GetComponent<SphereCollider>();
+        targetPlayer = GameObject.FindGameObjectWithTag(TAG_PLAYER);
 
+        col = GetComponent<SphereCollider>();
         anim = GetComponentInChildren<Animator>();
         ShootingLaser = GetComponentInChildren<LineRenderer>();
         ShootingLaser.enabled = false;
@@ -68,12 +74,7 @@ public class Enemy : MonoBehaviour
                 case State.PATROL:
                     Patrol();
                     break;
-                //case State.SUSPICIOUS:
-                //    Suspicious();
-                //    break;
-                //case State.CHASE:
-                //    Chase();
-                //    break;
+   
                 case State.ATTACK:
                     Attack();
                     break;
@@ -89,12 +90,11 @@ public class Enemy : MonoBehaviour
 
             //Enemy speed
             agent.speed = moveSpeed;
+            agent.angularSpeed = ANGULAR_SPEED;
 
-            agent.angularSpeed = 250f;
-
-            //if enemy position is the players last known position or remaining distance to the patrol location is smaller than stop distance 
             if (agent.remainingDistance < agent.stoppingDistance)
             {
+                //Go to a patrol location wait few seconds and go to next one
                 patrolTimer += Time.deltaTime;
 
                 if (patrolTimer >= patrolWaitTime)
@@ -130,13 +130,13 @@ public class Enemy : MonoBehaviour
 
         if (Physics.Raycast(transform.position, direction.normalized, out hit, col.radius))
         {
-            if (hit.collider.CompareTag("Player"))
+            if (hit.collider.CompareTag(TAG_PLAYER))
             {
                 Debug.Log(angle);
 
-                if (angle < 25)
+                if (angle < ANGLE_TO_SEE)
                 {
-                    //Shoot Now we saw the player
+                    //Now we saw the player
                     Debug.Log("Saw you human!");
                     state = State.ATTACK;
                 }
@@ -151,10 +151,10 @@ public class Enemy : MonoBehaviour
         Debug.Log("Attaaaaack!");
         agent.isStopped = true;
         ShootingLaser.enabled = true;
-        ShootingLaser.SetPosition(0, LaserGun.transform.position);//new Vector3(LaserGun.transform.position,x,1.5f, transform.position.z - 0.2f));
+        ShootingLaser.SetPosition(0, LaserGun.transform.position);
         ShootingLaser.SetPosition(1, targetPlayer.transform.position);
 
-        GameManager.Instance.PlayerTakeDamage(100);
+        GameManager.Instance.PlayerTakeDamage(DAMAGE_VALUE);
         targetPlayer.GetComponent<PlayerMovement>().DieAnimation();
 
         StartCoroutine(DieAnimationDelay());

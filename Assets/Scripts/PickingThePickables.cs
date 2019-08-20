@@ -4,9 +4,15 @@ using UnityEngine;
 
 public class PickingThePickables : MonoBehaviour
 {
+    private const string TAG_PICKSTAR = "PickupStar";
+    private const string TAG_TRAP = "Trap1";
+    private const string TAG_HEALTH = "Health";
+    private const string TAG_SPEED = "Speed";
+    private const string TAG_EXIT = "Exit";
+
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("PickupStar"))
+        if (other.CompareTag(TAG_PICKSTAR))
         {
             float scorePoint = other.GetComponent<Pickup>().ScoreValue;
             other.GetComponent<Pickup>().GetPickedUp();
@@ -15,21 +21,21 @@ public class PickingThePickables : MonoBehaviour
             GetComponent<MoveStarToNewLocation>().NewStarPosition();
             other.GetComponent<AudioSource>().Play();
         }
-        else if(other.CompareTag("Trap1"))
+        else if(other.CompareTag(TAG_TRAP))
         {
             other.GetComponentInParent<TrapSystem>().DamageToPlayer();
         }
-        else if (other.CompareTag("Health"))
+        else if (other.CompareTag(TAG_HEALTH))
         {
             other.GetComponentInParent<PickableHealth>().AddHealth();
             other.GetComponent<PickableHealth>().GetPickedUp();
         }
-        else if (other.CompareTag("Speed"))
+        else if (other.CompareTag(TAG_SPEED))
         {
             other.GetComponentInParent<PickableSpeed>().AddSpeed();
             other.GetComponent<PickableSpeed>().GetPickedUp();
         }
-        else if (other.CompareTag("Exit"))
+        else if (other.CompareTag(TAG_EXIT))
         {
             other.GetComponent<ExitSystem>().EndTheLevel();
         }

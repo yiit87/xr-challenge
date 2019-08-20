@@ -21,6 +21,8 @@ public class GenerateLevel : MonoBehaviour
 
     private int[,] tiles;
 
+    private const string MAP = "Map";
+
     void Awake()
     {
         string levelSelected = fileNameToLoad + ".txt";
@@ -34,7 +36,7 @@ public class GenerateLevel : MonoBehaviour
     void BuildMap()
     {
         GameObject map = new GameObject();
-        map.name = "Map";
+        map.name = MAP;
         map.transform.position = Vector3.zero;
 
         Debug.Log("Building Map...");

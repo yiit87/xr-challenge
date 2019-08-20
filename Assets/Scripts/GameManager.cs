@@ -11,7 +11,6 @@ public class GameManager : MonoBehaviour
     public bool Pause { get; private set; }
     public GameObject PauseMenu;
 
-
     public bool PlayerDead { get; private set; }
 
     public Text ScoreText;
@@ -25,15 +24,18 @@ public class GameManager : MonoBehaviour
 
     public GameObject WarningNotEnoughStar;
 
-    float timer = 5f;
+    private float Timer = 5f;
 
     GameObject Player;
     private bool switchTheGameState = false;
     public AudioSource MainMusic;
 
-    public GameObject PausePanel;
     public GameObject YouDiedPanel;
     public GameObject EndGamePanel;
+
+    private const float TOTAL_SCORE = 0f;
+    private const int HEALTH = 100;
+    private const string TAG_PLAYER = "Player";
 
     private void Awake()
     {
@@ -42,11 +44,11 @@ public class GameManager : MonoBehaviour
             Instance = this;
         }
         Pause = false;
-        TotalScore = 0f;
-        HealthValue = 100;
+        TotalScore = TOTAL_SCORE;
+        HealthValue = HEALTH;
         HealthBarAdjuster();
         PlayerDeadCondition(false);
-        Player = GameObject.FindGameObjectWithTag("Player");
+        Player = GameObject.FindGameObjectWithTag(TAG_PLAYER);
     }
 
     // Update is called once per frame
@@ -56,7 +58,6 @@ public class GameManager : MonoBehaviour
         {
             OptionsMenuButton();
         }
-
 
         PauseConditions();
         UpdateScoreValue();
@@ -148,12 +149,12 @@ public class GameManager : MonoBehaviour
     {
         if (WarningNotEnoughStar.activeSelf)
         {
-            timer -= 1 * Time.deltaTime;
+            Timer -= 1 * Time.deltaTime;
 
-            if (timer <= 0)
+            if (Timer <= 0)
             {
                 WarningNotEnoughStar.SetActive(false);
-                timer = 5f;
+                Timer = 5f;
             }
         }
     }
@@ -173,13 +174,13 @@ public class GameManager : MonoBehaviour
     {
         switchTheGameState = !switchTheGameState; // Change between true or false
         PauseTheGame(switchTheGameState); // Depending of the true or false value pause or unpause the game
-        PausePanel.SetActive(switchTheGameState); // Depending of the true or false value turn on or off the pause menu
+        PauseMenu.SetActive(switchTheGameState); // Depending of the true or false value turn on or off the pause menu
     }
 
     #region Button Functionalities
     public void NextLevel()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);//next level
     }
 
     public void MainMenuButton()

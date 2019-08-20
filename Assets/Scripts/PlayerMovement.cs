@@ -16,6 +16,9 @@ public class PlayerMovement : MonoBehaviour
     private float TotalSpeedActiveTime = 5f;
     private float DefaultSpeed;
 
+    private const float DEFAULT_TOTAL_FAST_SPEED = 5f;
+    private const float ANIM_SPEED = 2.5f;
+    private const float ROTATION_SPEED = 300f;
     private Animator anim;
 
     // Start is called before the first frame update
@@ -43,7 +46,7 @@ public class PlayerMovement : MonoBehaviour
                 if (TotalSpeedActiveTime <= 0)
                 {
                     PlayerSpeed = DefaultSpeed;
-                    TotalSpeedActiveTime = 5;
+                    TotalSpeedActiveTime = DEFAULT_TOTAL_FAST_SPEED;
                     FasterActive = false;
                     anim.SetBool("isFast", false);
                 }
@@ -69,7 +72,7 @@ public class PlayerMovement : MonoBehaviour
             {
                 anim.SetBool("isFast", true);
             }
-            anim.speed = 2.5f;
+            anim.speed = ANIM_SPEED;
 
             PlayerMove(horizontal, vertical);
         }
@@ -87,7 +90,7 @@ public class PlayerMovement : MonoBehaviour
         cc.Move(moveDirectionPlayer * Time.deltaTime);
 
         Quaternion targetRotation = Quaternion.LookRotation(moveDirectionPlayer);
-        Quaternion newRotation = Quaternion.RotateTowards(transform.rotation, targetRotation, 300 * Time.deltaTime);
+        Quaternion newRotation = Quaternion.RotateTowards(transform.rotation, targetRotation, ROTATION_SPEED * Time.deltaTime);
 
         transform.rotation = newRotation;
     }
