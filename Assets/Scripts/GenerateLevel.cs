@@ -23,7 +23,7 @@ public class GenerateLevel : MonoBehaviour
 
     void Awake()
     {
-        string levelSelected = "Level1.txt";
+        string levelSelected = fileNameToLoad + ".txt";
         string combine = Path.Combine(Application.dataPath + "/LevelGenerate/", levelSelected);
 
         tiles = Load(combine);

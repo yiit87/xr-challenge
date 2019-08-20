@@ -30,9 +30,9 @@ public class CameraFollow : MonoBehaviour
 
             Vector3[] checkPoints = new Vector3[5];
             checkPoints[0] = standardPos;
-            checkPoints[1] = Vector3.Lerp(standardPos, abovePos, 0.25f);
-            checkPoints[2] = Vector3.Lerp(standardPos, abovePos, 0.5f);
-            checkPoints[3] = Vector3.Lerp(standardPos, abovePos, 0.75f);
+            checkPoints[1] = Vector3.Lerp(standardPos, abovePos, 10.25f);
+            checkPoints[2] = Vector3.Lerp(standardPos, abovePos, 10.5f);
+            checkPoints[3] = Vector3.Lerp(standardPos, abovePos, 10.75f);
             checkPoints[4] = abovePos;
 
             for (int i = 0; i < checkPoints.Length; i++)
@@ -53,7 +53,7 @@ public class CameraFollow : MonoBehaviour
     {
         if (Physics.Raycast(checkPos, player.position - checkPos, out hit, relCameraPosMag))
         {
-            if (hit.transform != player && hit.transform.tag != "Box" && hit.transform.tag != "bounce" && hit.transform.tag != "Key")
+            if (hit.transform != player && hit.transform.tag != "Enemy")
             //burasi playeri buldugu yer. Buraya bos kutulara tag koyup eklersek hareket etmez kamera
             {
                 return false;
@@ -66,7 +66,7 @@ public class CameraFollow : MonoBehaviour
     void SmoothLookAt()
     {
         Vector3 relPlayerPosition = player.position - transform.position;
-        Quaternion lookAtRotation = Quaternion.LookRotation(relPlayerPosition + new Vector3(0, .5f, 2), Vector3.up);
+        Quaternion lookAtRotation = Quaternion.LookRotation(relPlayerPosition + new Vector3(0, 0.5f, 2), Vector3.up);
         transform.rotation = Quaternion.Lerp(transform.rotation, lookAtRotation, 5f * Time.deltaTime);
     }
 }

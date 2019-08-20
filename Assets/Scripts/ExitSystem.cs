@@ -7,9 +7,9 @@ public class ExitSystem : MonoBehaviour
 {
    public void EndTheLevel()
     {
-        if (GameManager.Instance.Return_CollectedStar() == 5)
+        if (GameManager.Instance.Return_CollectedStar() == 0)
         {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+            GameManager.Instance.ActivateEndGamePanel();
         }
         else
         {

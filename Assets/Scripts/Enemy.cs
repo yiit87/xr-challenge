@@ -157,12 +157,12 @@ public class Enemy : MonoBehaviour
         GameManager.Instance.PlayerTakeDamage(100);
         targetPlayer.GetComponent<PlayerMovement>().DieAnimation();
 
-
         StartCoroutine(DieAnimationDelay());
     }
 
     IEnumerator DieAnimationDelay()
     {
+        GameManager.Instance.PlayerDeadCondition(true);
         yield return new WaitForSeconds(2);
         GameManager.Instance.PlayerDiedPanelActivation();
         GameManager.Instance.PauseTheGame(true);

@@ -34,7 +34,7 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!GameManager.Instance.Pause)
+        if (!GameManager.Instance.Pause && !GameManager.Instance.PlayerDead)
         {
             if (FasterActive)
             {

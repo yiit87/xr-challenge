@@ -11,6 +11,9 @@ public class GameManager : MonoBehaviour
     public bool Pause { get; private set; }
     public GameObject PauseMenu;
 
+
+    public bool PlayerDead { get; private set; }
+
     public Text ScoreText;
     private float TotalScore { get; set; }
 
@@ -30,6 +33,7 @@ public class GameManager : MonoBehaviour
 
     public GameObject PausePanel;
     public GameObject YouDiedPanel;
+    public GameObject EndGamePanel;
 
     private void Awake()
     {
@@ -41,7 +45,7 @@ public class GameManager : MonoBehaviour
         TotalScore = 0f;
         HealthValue = 100;
         HealthBarAdjuster();
-
+        PlayerDeadCondition(false);
         Player = GameObject.FindGameObjectWithTag("Player");
     }
 
@@ -65,6 +69,11 @@ public class GameManager : MonoBehaviour
     public void PauseTheGame(bool value)
     {
         Pause = value;
+    }
+
+    public void PlayerDeadCondition(bool value)
+    {
+        PlayerDead = value;
     }
     private void PauseConditions()
     {
@@ -154,6 +163,11 @@ public class GameManager : MonoBehaviour
         YouDiedPanel.SetActive(true);
     }
 
+    public void ActivateEndGamePanel()
+    {
+        EndGamePanel.SetActive(true);
+    }
+
     //Menu Button Functionalities
     public void OptionsMenuButton()
     {
@@ -163,6 +177,11 @@ public class GameManager : MonoBehaviour
     }
 
     #region Button Functionalities
+    public void NextLevel()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+    }
+
     public void MainMenuButton()
     {
         SceneManager.LoadScene(0);
