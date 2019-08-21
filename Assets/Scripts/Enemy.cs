@@ -157,7 +157,10 @@ public class Enemy : MonoBehaviour
         GameManager.Instance.PlayerTakeDamage(DAMAGE_VALUE);
         targetPlayer.GetComponent<PlayerMovement>().DieAnimation();
 
-        StartCoroutine(DieAnimationDelay());
+        if (GameManager.Instance.PlayerDead == false)
+        {
+            StartCoroutine(DieAnimationDelay());
+        }
     }
 
     IEnumerator DieAnimationDelay()
@@ -165,6 +168,6 @@ public class Enemy : MonoBehaviour
         GameManager.Instance.PlayerDeadCondition(true);
         yield return new WaitForSeconds(2);
         GameManager.Instance.PlayerDiedPanelActivation();
-        GameManager.Instance.PauseTheGame(true);
+     //   GameManager.Instance.PauseTheGame(true);
     }
 }

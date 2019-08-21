@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -12,7 +13,7 @@ public class GameManager : MonoBehaviour
     public GameObject PauseMenu;
 
     public bool PlayerDead { get; private set; }
-
+    public bool LevelComplete { get; private set; }
     public Text ScoreText;
     private float TotalScore { get; set; }
 
@@ -33,6 +34,12 @@ public class GameManager : MonoBehaviour
     public GameObject YouDiedPanel;
     public GameObject EndGamePanel;
 
+    public EventSystem eventS;
+
+    public GameObject FirstSelected_Options;
+    public GameObject FirstSelected_Dead;
+    public GameObject FirstSelected_LevelComplete;
+
     private const float TOTAL_SCORE = 0f;
     private const int HEALTH = 100;
     private const string TAG_PLAYER = "Player";
@@ -49,6 +56,9 @@ public class GameManager : MonoBehaviour
         HealthBarAdjuster();
         PlayerDeadCondition(false);
         Player = GameObject.FindGameObjectWithTag(TAG_PLAYER);
+
+
+       
     }
 
     // Update is called once per frame
@@ -56,6 +66,7 @@ public class GameManager : MonoBehaviour
     {
         if (Input.GetButtonDown("Cancel"))
         {
+            
             OptionsMenuButton();
         }
 
@@ -65,22 +76,36 @@ public class GameManager : MonoBehaviour
 
         WarningTextShut();
     }
-
     
     public void PauseTheGame(bool value)
     {
         Pause = value;
     }
 
+
     public void PlayerDeadCondition(bool value)
     {
+        if (value == true && PlayerPrefs.HasKey("Xbox"))
+        {
+            if (MainMusic.isPlaying)
+            {
+                MainMusic.Pause();
+            }
+            eventS.SetSelectedGameObject(FirstSelected_Dead);
+            eventS.firstSelectedGameObject = FirstSelected_Dead;         
+        }
+
         PlayerDead = value;
     }
+  
     private void PauseConditions()
     {
         if (Pause)
         {
-            MainMusic.Pause();
+            if (MainMusic.isPlaying)
+            {
+                MainMusic.Pause();
+            }
             PauseMenu.SetActive(true);
         }
         else
@@ -92,7 +117,7 @@ public class GameManager : MonoBehaviour
             PauseMenu.SetActive(false);
         }
     }
-
+    
     public void AddToTotalScore(float value)
     {
         TotalScore += value;
@@ -167,6 +192,11 @@ public class GameManager : MonoBehaviour
     public void ActivateEndGamePanel()
     {
         EndGamePanel.SetActive(true);
+        if (PlayerPrefs.HasKey("Xbox"))
+        {
+            eventS.SetSelectedGameObject(FirstSelected_LevelComplete);
+            eventS.firstSelectedGameObject = FirstSelected_LevelComplete;
+        }
     }
 
     //Menu Button Functionalities
@@ -175,8 +205,14 @@ public class GameManager : MonoBehaviour
         switchTheGameState = !switchTheGameState; // Change between true or false
         PauseTheGame(switchTheGameState); // Depending of the true or false value pause or unpause the game
         PauseMenu.SetActive(switchTheGameState); // Depending of the true or false value turn on or off the pause menu
-    }
 
+        if (PlayerPrefs.HasKey("Xbox"))
+        {
+            eventS.SetSelectedGameObject(FirstSelected_Options);
+            eventS.firstSelectedGameObject = FirstSelected_Options;
+        }
+    }
+   
     #region Button Functionalities
     public void NextLevel()
     {
@@ -203,4 +239,11 @@ public class GameManager : MonoBehaviour
         Application.Quit();
     }
     #endregion
+
+    public void SetLevelCompleteBool()
+    {
+        LevelComplete = true;
+    }
+
+    
 }
